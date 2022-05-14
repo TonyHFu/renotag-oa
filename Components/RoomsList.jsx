@@ -15,6 +15,7 @@ function RoomsList() {
 	const [materials, setMaterials] = useState([]);
 	const [roomsActions, setRoomsActions] = useState([]);
 	const [actionsMaterials, setActionsMaterials] = useState([]);
+	const [data, setData] = useState([]);
 
 	const [currentRoom, setCurrentRoom] = useState(1);
 
@@ -25,36 +26,91 @@ function RoomsList() {
 	const actionsMaterialsCollectionRef = collection(db, "actions_materials");
 
 	useEffect(() => {
-		const getRooms = async () => {
-			const data = await getDocs(roomsCollectionRef);
-			setRooms(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-		};
+		const roomsData = getDocs(roomsCollectionRef);
+		const roomsActionsData = getDocs(roomsActionsCollectionRef);
+		const actionsData = getDocs(actionsCollectionRef);
+		const actionsMaterialsData = getDocs(actionsMaterialsCollectionRef);
+		const materialsData = getDocs(materialsCollectionRef);
 
-		const getActions = async () => {
-			const q = query(
-				roomsActionsCollectionRef,
-				where("room_id", "==", currentRoom)
-			);
-			const roomsActionsQuery = await getDocs(q);
-			setRoomsActions(
-				roomsActionsQuery.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-			);
-			const actionsData = await getDocs(actionsCollectionRef);
-			setActions(actionsData.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-		};
+		Promise.all([
+			roomsData,
+			roomsActionsData,
+			actionsData,
+			actionsMaterialsData,
+			materialsData,
+		]).then(results => {
+			const roomsArr = results[0].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setRooms(roomsArr);
+			const roomsActionsArr = results[1].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setRoomsActions(roomsActionsArr);
+			const actionsArr = results[2].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setActions(actionsArr);
+			const actionsMaterialsArr = results[3].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setActionsMaterials(actionsMaterialsArr);
+			const materialsArr = results[4].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setMaterials(materialsArr);
 
-		getRooms();
-		if (currentRoom) getActions();
+			setData(
+				roomsArr.map(room => {
+					const possibleActions = roomsActionsArr
+						.filter(
+							roomsActions =>
+								roomsActions.updated && roomsActions.room_id === room.id
+						)
+						.map(roomsActions => roomsActions.action_id);
+					return {
+						...room,
+						actions: actionsArr
+							.filter(action => possibleActions.includes(action.id))
+							.map(action => {
+								const possibleMaterials = actionsMaterialsArr
+									.filter(
+										actionsMaterials =>
+											actionsMaterials.updated &&
+											actionsMaterials.action_id === action.id
+									)
+									.map(actionsMaterials => actionsMaterials.material_id);
+								return {
+									...action,
+									materials: materialsArr.filter(
+										material =>
+											material.updated &&
+											possibleMaterials.includes(material.id)
+									),
+								};
+							}),
+					};
+				})
+			);
+		});
 	}, []);
 
 	return (
 		<div>
+			<pre>{JSON.stringify(data)}</pre>
 			{rooms.map(room => {
 				return (
 					<RoomsListItem
 						key={room.id}
+						id={room.id}
 						name={room.name}
 						actions={actions}
+						currentRoom={currentRoom}
 					></RoomsListItem>
 				);
 			})}

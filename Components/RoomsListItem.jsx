@@ -1,13 +1,14 @@
 import React from "react";
 
 function RoomsListItem(props) {
-	const { name, actions } = props;
+	const { name, actions, id, currentRoom } = props;
 	return (
 		<div>
 			{name}
-			{actions.map(action => {
-				return <div>{action.name}</div>;
-			})}
+			{currentRoom == id &&
+				actions.map(action => {
+					return <div>{action.name}</div>;
+				})}
 		</div>
 	);
 }
