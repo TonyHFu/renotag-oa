@@ -103,13 +103,13 @@ function RoomsList() {
 	return (
 		<div>
 			<pre>{JSON.stringify(data)}</pre>
-			{rooms.map(room => {
+			{data.map(room => {
 				return (
 					<RoomsListItem
 						key={room.id}
 						id={room.id}
 						name={room.name}
-						actions={actions}
+						actions={room.actions}
 						currentRoom={currentRoom}
 					></RoomsListItem>
 				);
