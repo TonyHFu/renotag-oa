@@ -25,6 +25,10 @@ function RoomsList() {
 	const materialsCollectionRef = collection(db, "materials");
 	const actionsMaterialsCollectionRef = collection(db, "actions_materials");
 
+	const handleRoomSelection = id => {
+		setCurrentRoom(id);
+	};
+
 	useEffect(() => {
 		const roomsData = getDocs(roomsCollectionRef);
 		const roomsActionsData = getDocs(roomsActionsCollectionRef);
@@ -111,6 +115,7 @@ function RoomsList() {
 						name={room.name}
 						actions={room.actions}
 						currentRoom={currentRoom}
+						handleRoomSelection={handleRoomSelection}
 					></RoomsListItem>
 				);
 			})}

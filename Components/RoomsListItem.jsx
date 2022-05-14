@@ -1,23 +1,34 @@
 import React, { useState } from "react";
+import { Card, List, ListItem } from "@mui/material";
 
 function RoomsListItem(props) {
-	const { name, actions, id, currentRoom } = props;
+	const { name, actions, id, currentRoom, handleRoomSelection } = props;
 	const [selectedAction, setSelectedAction] = useState(null);
 
 	return (
-		<div>
+		<Card variant="outlined" onClick={() => handleRoomSelection(id)}>
 			{name}
-			{currentRoom == id &&
-				actions.map(action => {
-					return (
-						<div>
-							{action.name}
-							{action.id === selectedAction &&
-								action.materials.map(material => <div>{material.name}</div>)}
-						</div>
-					);
-				})}
-		</div>
+			{currentRoom == id && (
+				<List>
+					{actions.map(action => {
+						return (
+							<ListItem
+								style={{ display: "block" }}
+								onClick={() => setSelectedAction(action.id)}
+							>
+								{action.name}
+								<List>
+									{action.id === selectedAction?.toString() &&
+										action.materials.map(material => (
+											<ListItem>{material.name}</ListItem>
+										))}
+								</List>
+							</ListItem>
+						);
+					})}
+				</List>
+			)}
+		</Card>
 	);
 }
 
