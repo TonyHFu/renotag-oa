@@ -3,7 +3,8 @@ import { Card, List, ListItem, Typography } from "@mui/material";
 import ActionsList from "./ActionsList";
 
 function RoomsListItem(props) {
-	const { name, actions, id, currentRoom, handleRoomSelection } = props;
+	const { name, actions, id, currentRoom, handleRoomSelection, setData } =
+		props;
 	const [selectedAction, setSelectedAction] = useState(null);
 
 	return (
@@ -14,6 +15,7 @@ function RoomsListItem(props) {
 					actions={actions}
 					selectedAction={selectedAction}
 					setSelectedAction={setSelectedAction}
+					setData={setData}
 				></ActionsList>
 			)}
 		</Card>

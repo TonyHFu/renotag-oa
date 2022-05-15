@@ -10,10 +10,10 @@ import { db } from "../firebase";
 import RoomsListItem from "./RoomsListItem";
 
 function RoomsList(props) {
-	const { data, handleRoomSelection, currentRoom } = props;
+	const { data, handleRoomSelection, currentRoom, setData } = props;
 	return (
 		<div>
-			{/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+			<pre>{JSON.stringify(data, null, 2)}</pre>
 			{data.map(room => {
 				return (
 					<RoomsListItem
@@ -23,6 +23,7 @@ function RoomsList(props) {
 						actions={room.actions}
 						currentRoom={currentRoom}
 						handleRoomSelection={handleRoomSelection}
+						setData={setData}
 					></RoomsListItem>
 				);
 			})}

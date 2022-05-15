@@ -145,6 +145,7 @@ export default function Home() {
 				data={data}
 				handleRoomSelection={handleRoomSelection}
 				currentRoom={currentRoom}
+				setData={setData}
 			></RoomsList>
 		</div>
 	);

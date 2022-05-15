@@ -1,9 +1,11 @@
-import { ListItem, Typography } from "@mui/material";
+import { Button, ListItem, Typography } from "@mui/material";
 import React from "react";
 import Editable from "./Editable";
 
 function MaterialsListItem(props) {
-	const { material } = props;
+	const { material, setData } = props;
+
+	const handleDelete = () => {};
 
 	return (
 		<ListItem
@@ -43,6 +45,7 @@ function MaterialsListItem(props) {
 				fieldName={"units"}
 				docId={material.actions_materials_id}
 			></Editable>
+			<Button variant="outlined">Delete</Button>
 		</ListItem>
 	);
 }
