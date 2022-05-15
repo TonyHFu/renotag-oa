@@ -62,12 +62,6 @@ function Editable(props) {
 			.then(res => {
 				console.log("doc added and updated!!");
 				newDocId = res[0].id;
-				if (!secondaryCollectionName) {
-					return setOpen(false);
-					// return window.location.reload(false);
-				}
-
-				// console.log("res", res[0]);
 
 				if (collectionName === "material_details") {
 					states.setMaterialDetails(prev => {
@@ -90,25 +84,29 @@ function Editable(props) {
 					});
 				}
 
-				// setData(prev => {
-				// 	const copyOfPrev = [...prev];
-				// 	const roomIndex = copyOfPrev.findIndex(
-				// 		room => room.id === currentRoom
-				// 	);
-				// 	const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
-				// 		action => action.id === selectedAction
-				// 	);
-				// 	const materialIndex = copyOfPrev[roomIndex].actions[
-				// 		actionIndex
-				// 	].materials.findIndex(
-				// 		eachMaterial => eachMaterial.material_id === material.material_id
-				// 	);
-				// 	copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
-				// 		materialIndex,
-				// 		1
-				// 	);
-				// 	return copyOfPrev;
-				// });
+				if (collectionName === "actions_materials") {
+					states.setActionsMaterials(prev => {
+						const copyOfPrev = [...prev];
+						const materialsIndex = copyOfPrev.findIndex(
+							material => material.id === docId
+						);
+						copyOfPrev[materialsIndex].updated = false;
+
+						return [
+							...copyOfPrev,
+							{
+								...otherFields,
+								id: newDocId,
+								[fieldName]: editedContent,
+								updated: true,
+								timestamp: serverTimestamp(),
+							},
+						];
+					});
+				}
+				if (!secondaryCollectionName) {
+					return setOpen(false);
+				}
 
 				return updateDoc(doc(db, secondaryCollectionName, secondaryDocId), {
 					[secondaryIdPointer]: newDocId,
@@ -129,7 +127,6 @@ function Editable(props) {
 						return copyOfPrev;
 					});
 				}
-				// window.location.reload(false);
 			});
 	};
 
