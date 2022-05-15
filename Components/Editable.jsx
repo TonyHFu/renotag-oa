@@ -1,6 +1,12 @@
 import { Button, Dialog, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	doc,
+	serverTimestamp,
+	updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 function Editable(props) {
@@ -31,12 +37,16 @@ function Editable(props) {
 	};
 
 	const handleUpdate = () => {
-		addDoc(collection(db, collectionName), {
-			...otherFields,
-			[fieldName]: editedContent,
-			updated: true,
-			timestamp: serverTimestamp(),
-		}).then(res => {
+		const editedDoc = doc(db, collectionName, docId);
+		Promise.all([
+			addDoc(collection(db, collectionName), {
+				...otherFields,
+				[fieldName]: editedContent,
+				updated: true,
+				timestamp: serverTimestamp(),
+			}),
+			updateDoc(editedDoc, { updated: false }),
+		]).then(res => {
 			console.log("doc added!");
 			setOpen(false);
 		});

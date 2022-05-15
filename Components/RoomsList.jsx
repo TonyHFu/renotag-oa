@@ -117,7 +117,7 @@ function RoomsList() {
 
 	return (
 		<div>
-			<pre>{JSON.stringify(data)}</pre>
+			<pre>{JSON.stringify(data, null, 2)}</pre>
 			{data.map(room => {
 				return (
 					<RoomsListItem
