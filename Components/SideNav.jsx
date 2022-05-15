@@ -7,7 +7,7 @@ function SideNav(props) {
 	return (
 		<div id="preferences-side" style={{}}>
 			{tables.map(eachTable => (
-				<div>
+				<div key={eachTable}>
 					<p
 						onClick={() => {
 							setTable(eachTable);

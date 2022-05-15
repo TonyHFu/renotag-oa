@@ -7,9 +7,9 @@ function SubNav(props) {
 
 	return (
 		<div style={{ paddingLeft: 5 }}>
-			{subNavList.map(subNavListItem => {
+			{subNavList.map((subNavListItem, i) => {
 				return (
-					<p onClick={() => setInstance(subNavListItem.name)}>
+					<p key={i} onClick={() => setInstance(subNavListItem.name)}>
 						{subNavListItem.name}
 					</p>
 				);

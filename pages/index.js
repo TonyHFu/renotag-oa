@@ -136,6 +136,7 @@ export default function Home() {
 		actions,
 		actionsMaterials,
 		materials,
+		materialDetails,
 	};
 	return (
 		<div className={styles.container}>

@@ -1,5 +1,6 @@
 import { List } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import DisplayArea from "./DisplayArea";
 import SideNav from "./SideNav";
 
 const tables = ["rooms", "actions", "materials"];
@@ -8,7 +9,7 @@ function DisplayStats(props) {
 	const { sideNavData } = props;
 
 	const [table, setTable] = useState("rooms");
-	const [instance, setInstance] = useState(sideNavData[table][0].name);
+	const [instance, setInstance] = useState(sideNavData[table][0]?.name || null);
 
 	useEffect(() => {}, []);
 	return (
@@ -23,8 +24,11 @@ function DisplayStats(props) {
 					sideNavData={sideNavData}
 					setInstance={setInstance}
 				></SideNav>
-				<h3>{table}</h3>
-				<h4>{instance}</h4>
+				<DisplayArea
+					table={table}
+					instance={instance}
+					sideNavData={sideNavData}
+				></DisplayArea>
 			</div>
 		</>
 	);
