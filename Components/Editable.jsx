@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogTitle } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
 	addDoc,
 	collection,
@@ -8,6 +8,8 @@ import {
 	updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+
+import { StatesContext } from "../pages/index";
 
 function Editable(props) {
 	const {
@@ -24,6 +26,9 @@ function Editable(props) {
 		secondaryIdPointer,
 		setData,
 	} = props;
+
+	const states = useContext(StatesContext);
+
 	const [clicked, setClicked] = useState(false);
 	const [editedContent, setEditedContent] = useState(content);
 	const [open, setOpen] = useState(false);
@@ -44,6 +49,7 @@ function Editable(props) {
 	const handleUpdate = () => {
 		//Note: currently does not update data state, only the displayed state. refresh will draw in new data
 		const editedDoc = doc(db, collectionName, docId);
+		let newDocId;
 		Promise.all([
 			addDoc(collection(db, collectionName), {
 				...otherFields,
@@ -55,9 +61,33 @@ function Editable(props) {
 		])
 			.then(res => {
 				console.log("doc added and updated!!");
+				newDocId = res[0].id;
 				if (!secondaryCollectionName) {
-					setOpen(false);
-					return window.location.reload(false);
+					return setOpen(false);
+					// return window.location.reload(false);
+				}
+
+				// console.log("res", res[0]);
+
+				if (collectionName === "material_details") {
+					states.setMaterialDetails(prev => {
+						const copyOfPrev = [...prev];
+						const detailsIndex = copyOfPrev.findIndex(
+							detail => detail.id === docId
+						);
+						copyOfPrev[detailsIndex].updated = false;
+
+						return [
+							...copyOfPrev,
+							{
+								...otherFields,
+								id: newDocId,
+								[fieldName]: editedContent,
+								updated: true,
+								timestamp: serverTimestamp(),
+							},
+						];
+					});
 				}
 
 				// setData(prev => {
@@ -81,14 +111,25 @@ function Editable(props) {
 				// });
 
 				return updateDoc(doc(db, secondaryCollectionName, secondaryDocId), {
-					[secondaryIdPointer]: res[0].id,
+					[secondaryIdPointer]: newDocId,
 					timestamp: serverTimestamp(),
 				});
 			})
 			.then(res => {
 				console.log("secondary doc added and updated!");
 				setOpen(false);
-				window.location.reload(false);
+
+				if (secondaryCollectionName === "materials") {
+					states.setMaterials(prev => {
+						const copyOfPrev = [...prev];
+						const materialsIndex = copyOfPrev.findIndex(
+							material => material.id === secondaryDocId
+						);
+						copyOfPrev[materialsIndex].material_details_id = newDocId;
+						return copyOfPrev;
+					});
+				}
+				// window.location.reload(false);
 			});
 	};
 

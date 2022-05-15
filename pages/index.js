@@ -1,11 +1,13 @@
 import { collection, getDocs } from "firebase/firestore";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import DisplayStats from "../Components/DisplayStats";
 import RoomsList from "../Components/RoomsList";
 import { db } from "../firebase";
 import styles from "../styles/Home.module.css";
+
+export const StatesContext = createContext();
 
 export default function Home() {
 	const [rooms, setRooms] = useState([]);
@@ -192,21 +194,39 @@ export default function Home() {
 		materials,
 		materialDetails,
 	};
+
+	const states = {
+		rooms,
+		roomsActions,
+		actions,
+		actionsMaterials,
+		materials,
+		materialDetails,
+		setRooms,
+		setRoomsActions,
+		setActions,
+		setActionsMaterials,
+		setMaterials,
+		setMaterialDetails,
+	};
 	return (
 		<div className={styles.container}>
-			<DisplayStats sideNavData={sideNavData}></DisplayStats>
-			<RoomsList
-				data={data}
-				handleRoomSelection={handleRoomSelection}
-				currentRoom={currentRoom}
-				setData={setData}
-				rooms={rooms}
-				roomsActions={roomsActions}
-				actions={actions}
-				actionsMaterials={actionsMaterials}
-				materialDetails={materialDetails}
-				materials={materials}
-			></RoomsList>
+			<pre>{JSON.stringify(states.materials, null, 2)}</pre>
+			<StatesContext.Provider value={states}>
+				<DisplayStats sideNavData={sideNavData}></DisplayStats>
+				<RoomsList
+					data={data}
+					handleRoomSelection={handleRoomSelection}
+					currentRoom={currentRoom}
+					setData={setData}
+					rooms={rooms}
+					roomsActions={roomsActions}
+					actions={actions}
+					actionsMaterials={actionsMaterials}
+					materialDetails={materialDetails}
+					materials={materials}
+				></RoomsList>
+			</StatesContext.Provider>
 		</div>
 	);
 }

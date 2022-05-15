@@ -29,7 +29,6 @@ function DisplayArea(props) {
 			return a.x - b.x;
 		});
 
-	console.log("materialDetailsData", materialDetailsData);
 	return (
 		<div>
 			<h3>{table}</h3>
