@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, List, ListItem } from "@mui/material";
+import { Card, List, ListItem, Typography } from "@mui/material";
 
 function RoomsListItem(props) {
 	const { name, actions, id, currentRoom, handleRoomSelection } = props;
@@ -20,7 +20,20 @@ function RoomsListItem(props) {
 								<List>
 									{action.id === selectedAction?.toString() &&
 										action.materials.map(material => (
-											<ListItem>{material.name}</ListItem>
+											<ListItem
+												style={{
+													display: "flex",
+													flexDirection: "row",
+													justifyContent: "space-between",
+												}}
+											>
+												<Typography>{material.name}</Typography>
+												<Typography>Unit price: {material.price}</Typography>
+												<Typography>
+													{material.units !== "null" &&
+														"Units: " + material.units}
+												</Typography>
+											</ListItem>
 										))}
 								</List>
 							</ListItem>

@@ -82,20 +82,31 @@ function RoomsList() {
 						actions: actionsArr
 							.filter(action => possibleActions.includes(action.id))
 							.map(action => {
-								const possibleMaterials = actionsMaterialsArr
-									.filter(
-										actionsMaterials =>
-											actionsMaterials.updated &&
-											actionsMaterials.action_id === action.id
-									)
-									.map(actionsMaterials => actionsMaterials.material_id);
 								return {
 									...action,
-									materials: materialsArr.filter(
-										material =>
-											material.updated &&
-											possibleMaterials.includes(material.id)
-									),
+
+									materials: actionsMaterialsArr
+										.filter(
+											actionsMaterials =>
+												actionsMaterials.updated &&
+												actionsMaterials.action_id === action.id
+										)
+										.map(material => {
+											return {
+												id: material.material_id,
+												name: materialsArr.filter(
+													materialFromArr =>
+														material.material_id === materialFromArr.id
+												)[0].name,
+												price: materialsArr.filter(
+													materialFromArr =>
+														material.material_id === materialFromArr.id
+												)[0].price,
+												units: material.units,
+												timestamp: material.timestamp,
+												updated: material.updated,
+											};
+										}),
 								};
 							}),
 					};
