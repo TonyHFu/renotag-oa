@@ -53,6 +53,9 @@ function Editable(props) {
 		])
 			.then(res => {
 				console.log("doc added and updated!!");
+				if (!secondaryCollectionName) {
+					return setOpen(false);
+				}
 				return updateDoc(doc(db, secondaryCollectionName, secondaryDocId), {
 					[secondaryIdPointer]: res[0].id,
 					timestamp: serverTimestamp(),
