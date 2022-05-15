@@ -13,27 +13,23 @@ function MaterialsListItem(props) {
 				justifyContent: "space-between",
 			}}
 		>
-			<Editable
-				prefix=""
-				suffix=""
-				content={material.name}
-				otherFields={{
-					price: material.price,
-				}}
-				collectionName={"materials"}
-				fieldName={"name"}
-				docId={material.id}
-			></Editable>
+			<p>{material.name}</p>
 			<Editable
 				prefix="Unit Price: $"
 				suffix=""
 				content={material.price}
 				otherFields={{
+					material_id: material.material_id,
+				}}
+				collectionName={"material_details"}
+				fieldName={"price"}
+				docId={material.material_details_id}
+				secondaryDocId={material.material_id}
+				secondaryCollectionName={"materials"}
+				secondaryFields={{
 					name: material.name,
 				}}
-				collectionName={"materials"}
-				fieldName={"price"}
-				docId={material.id}
+				secondaryIdPointer="material_details_id"
 			></Editable>
 			<Editable
 				prefix="Units: "

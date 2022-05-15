@@ -18,6 +18,10 @@ function Editable(props) {
 		collectionName,
 		fieldName,
 		docId,
+		secondaryDocId,
+		secondaryCollectionName,
+		secondaryFields,
+		secondaryIdPointer,
 	} = props;
 	const [clicked, setClicked] = useState(false);
 	const [editedContent, setEditedContent] = useState(content);
@@ -46,10 +50,18 @@ function Editable(props) {
 				timestamp: serverTimestamp(),
 			}),
 			updateDoc(editedDoc, { updated: false }),
-		]).then(res => {
-			console.log("doc added!");
-			setOpen(false);
-		});
+		])
+			.then(res => {
+				console.log("doc added and updated!!");
+				return updateDoc(doc(db, secondaryCollectionName, secondaryDocId), {
+					[secondaryIdPointer]: res[0].id,
+					timestamp: serverTimestamp(),
+				});
+			})
+			.then(res => {
+				console.log("secondary doc added and updated!");
+				setOpen(false);
+			});
 	};
 
 	return (

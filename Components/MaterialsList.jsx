@@ -11,7 +11,7 @@ function MaterialsList(props) {
 				action.materials.map(material => (
 					<MaterialsListItem
 						material={material}
-						key={material.id}
+						key={material.material_id}
 					></MaterialsListItem>
 				))}
 		</List>

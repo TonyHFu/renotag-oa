@@ -23,6 +23,7 @@ function RoomsList() {
 	const actionsCollectionRef = collection(db, "actions");
 	const roomsActionsCollectionRef = collection(db, "rooms_actions");
 	const materialsCollectionRef = collection(db, "materials");
+	const materialDetailsCollectionRef = collection(db, "material_details");
 	const actionsMaterialsCollectionRef = collection(db, "actions_materials");
 
 	const handleRoomSelection = id => {
@@ -35,6 +36,7 @@ function RoomsList() {
 		const actionsData = getDocs(actionsCollectionRef);
 		const actionsMaterialsData = getDocs(actionsMaterialsCollectionRef);
 		const materialsData = getDocs(materialsCollectionRef);
+		const materialDetailsData = getDocs(materialDetailsCollectionRef);
 
 		Promise.all([
 			roomsData,
@@ -42,6 +44,7 @@ function RoomsList() {
 			actionsData,
 			actionsMaterialsData,
 			materialsData,
+			materialDetailsData,
 		]).then(results => {
 			const roomsArr = results[0].docs.map(doc => ({
 				...doc.data(),
@@ -68,6 +71,11 @@ function RoomsList() {
 				id: doc.id,
 			}));
 			setMaterials(materialsArr);
+			const materialDetailsArr = results[5].docs.map(doc => ({
+				...doc.data(),
+				id: doc.id,
+			}));
+			setMaterials(materialDetailsArr);
 
 			setData(
 				roomsArr.map(room => {
@@ -92,19 +100,27 @@ function RoomsList() {
 												actionsMaterials.action_id === action.id
 										)
 										.map(material => {
-											const { name, price } = materialsArr.filter(
+											const { name, material_details_id } = materialsArr.filter(
 												materialFromArr =>
 													material.material_id === materialFromArr.id
 											)[0];
+											const { price, id } = materialDetailsArr.filter(
+												materialDetailsFromArr =>
+													materialDetailsFromArr.updated &&
+													material.material_id ===
+														materialDetailsFromArr.material_id
+											)[0];
+
 											return {
 												actions_materials_id: material.id,
-												id: material.material_id,
+												material_id: material.material_id,
 												action_id: material.action_id,
 												name,
 												price,
 												units: material.units,
-												timestamp: material.timestamp,
-												updated: material.updated,
+												// timestamp: material.timestamp,
+												// updated: material.updated,
+												material_details_id,
 											};
 										}),
 								};
