@@ -83,7 +83,9 @@ function Editable(props) {
 				</>
 			)}
 			{!clicked && (
-				<p onClick={() => setClicked(true)}>{prefix + content + suffix}</p>
+				<p onClick={() => setClicked(true)}>
+					{prefix + editedContent + suffix}
+				</p>
 			)}
 
 			<Dialog open={open}>
