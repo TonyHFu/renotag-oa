@@ -75,60 +75,114 @@ export default function Home() {
 				id: doc.id,
 			}));
 			setMaterialDetails(materialDetailsArr);
-
-			setData(
-				roomsArr.map(room => {
-					const possibleActions = roomsActionsArr
-						.filter(
-							roomsActions =>
-								roomsActions.updated && roomsActions.room_id === room.id
-						)
-						.map(roomsActions => roomsActions.action_id);
-					return {
-						...room,
-						actions: actionsArr
-							.filter(action => possibleActions.includes(action.id))
-							.map(action => {
-								return {
-									...action,
-
-									materials: actionsMaterialsArr
-										.filter(
-											actionsMaterials =>
-												actionsMaterials.updated &&
-												actionsMaterials.action_id === action.id
-										)
-										.map(material => {
-											const { name, material_details_id } = materialsArr.filter(
-												materialFromArr =>
-													material.material_id === materialFromArr.id
-											)[0];
-											const { price, id } = materialDetailsArr.filter(
-												materialDetailsFromArr =>
-													materialDetailsFromArr.updated &&
-													material.material_id ===
-														materialDetailsFromArr.material_id
-											)[0];
-
-											return {
-												actions_materials_id: material.id,
-												material_id: material.material_id,
-												action_id: material.action_id,
-												name,
-												price,
-												units: material.units,
-												// timestamp: material.timestamp,
-												// updated: material.updated,
-												material_details_id,
-											};
-										}),
-								};
-							}),
-					};
-				})
-			);
 		});
+
+		// setData(
+		// 	roomsArr.map(room => {
+		// 		const possibleActions = roomsActionsArr
+		// 			.filter(
+		// 				roomsActions =>
+		// 					roomsActions.updated && roomsActions.room_id === room.id
+		// 			)
+		// 			.map(roomsActions => roomsActions.action_id);
+		// 		return {
+		// 			...room,
+		// 			actions: actionsArr
+		// 				.filter(action => possibleActions.includes(action.id))
+		// 				.map(action => {
+		// 					return {
+		// 						...action,
+
+		// 						materials: actionsMaterialsArr
+		// 							.filter(
+		// 								actionsMaterials =>
+		// 									actionsMaterials.updated &&
+		// 									actionsMaterials.action_id === action.id
+		// 							)
+		// 							.map(material => {
+		// 								const { name, material_details_id } = materialsArr.filter(
+		// 									materialFromArr =>
+		// 										material.material_id === materialFromArr.id
+		// 								)[0];
+		// 								const { price, id } = materialDetailsArr.filter(
+		// 									materialDetailsFromArr =>
+		// 										materialDetailsFromArr.updated &&
+		// 										material.material_id ===
+		// 											materialDetailsFromArr.material_id
+		// 								)[0];
+
+		// 								return {
+		// 									actions_materials_id: material.id,
+		// 									material_id: material.material_id,
+		// 									action_id: material.action_id,
+		// 									name,
+		// 									price,
+		// 									units: material.units,
+		// 									// timestamp: material.timestamp,
+		// 									// updated: material.updated,
+		// 									material_details_id,
+		// 								};
+		// 							}),
+		// 					};
+		// 				}),
+		// 		};
+		// 	})
+		// );
 	}, []);
+
+	useEffect(() => {
+		setData(
+			rooms.map(room => {
+				const possibleActions = roomsActions
+					.filter(
+						roomsAction =>
+							roomsAction.updated && roomsAction.room_id === room.id
+					)
+					.map(roomsAction => roomsAction.action_id);
+				return {
+					...room,
+					actions: actions
+						.filter(action => possibleActions.includes(action.id))
+						.map(action => {
+							return {
+								...action,
+
+								materials: actionsMaterials
+									.filter(
+										actionsMaterial =>
+											actionsMaterial.updated &&
+											actionsMaterial.action_id === action.id
+									)
+									.map(material => {
+										const { name, material_details_id } = materials.filter(
+											materialFromArr =>
+												material.material_id === materialFromArr.id
+										)[0];
+										const { price, id } = materialDetails.filter(
+											materialDetailsFromArr =>
+												materialDetailsFromArr.updated &&
+												material.material_id ===
+													materialDetailsFromArr.material_id
+										)[0];
+
+										return {
+											actions_materials_id: material.id,
+											material_id: material.material_id,
+											action_id: material.action_id,
+											name,
+											price,
+											units: material.units,
+											// timestamp: material.timestamp,
+											// updated: material.updated,
+											material_details_id,
+										};
+									}),
+							};
+						}),
+				};
+			})
+		);
+	}, [rooms, actions, materials, roomsActions, actionsMaterials]);
 
 	const sideNavData = {
 		rooms,
@@ -146,6 +200,12 @@ export default function Home() {
 				handleRoomSelection={handleRoomSelection}
 				currentRoom={currentRoom}
 				setData={setData}
+				rooms={rooms}
+				roomsActions={roomsActions}
+				actions={actions}
+				actionsMaterials={actionsMaterials}
+				materialDetails={materialDetails}
+				materials={materials}
 			></RoomsList>
 		</div>
 	);

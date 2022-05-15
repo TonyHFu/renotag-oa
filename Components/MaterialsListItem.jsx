@@ -14,6 +14,7 @@ function MaterialsListItem(props) {
 			material.actions_materials_id
 		);
 		updateDoc(editedDoc, { updated: false }).then(res => {
+			console.log("doc updated => false");
 			setData(prev => {
 				const copyOfPrev = [...prev];
 				const roomIndex = copyOfPrev.findIndex(room => room.id === currentRoom);
@@ -59,6 +60,7 @@ function MaterialsListItem(props) {
 					name: material.name,
 				}}
 				secondaryIdPointer="material_details_id"
+				setData={setData}
 			></Editable>
 			<Editable
 				prefix="Units: "
@@ -71,6 +73,7 @@ function MaterialsListItem(props) {
 				collectionName={"actions_materials"}
 				fieldName={"units"}
 				docId={material.actions_materials_id}
+				setData={setData}
 			></Editable>
 			<Button onClick={handleDelete} variant="outlined">
 				Delete

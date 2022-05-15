@@ -22,6 +22,7 @@ function Editable(props) {
 		secondaryCollectionName,
 		secondaryFields,
 		secondaryIdPointer,
+		setData,
 	} = props;
 	const [clicked, setClicked] = useState(false);
 	const [editedContent, setEditedContent] = useState(content);
@@ -55,8 +56,30 @@ function Editable(props) {
 			.then(res => {
 				console.log("doc added and updated!!");
 				if (!secondaryCollectionName) {
-					return setOpen(false);
+					setOpen(false);
+					return window.location.reload(false);
 				}
+
+				// setData(prev => {
+				// 	const copyOfPrev = [...prev];
+				// 	const roomIndex = copyOfPrev.findIndex(
+				// 		room => room.id === currentRoom
+				// 	);
+				// 	const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
+				// 		action => action.id === selectedAction
+				// 	);
+				// 	const materialIndex = copyOfPrev[roomIndex].actions[
+				// 		actionIndex
+				// 	].materials.findIndex(
+				// 		eachMaterial => eachMaterial.material_id === material.material_id
+				// 	);
+				// 	copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
+				// 		materialIndex,
+				// 		1
+				// 	);
+				// 	return copyOfPrev;
+				// });
+
 				return updateDoc(doc(db, secondaryCollectionName, secondaryDocId), {
 					[secondaryIdPointer]: res[0].id,
 					timestamp: serverTimestamp(),
@@ -65,6 +88,7 @@ function Editable(props) {
 			.then(res => {
 				console.log("secondary doc added and updated!");
 				setOpen(false);
+				window.location.reload(false);
 			});
 	};
 
