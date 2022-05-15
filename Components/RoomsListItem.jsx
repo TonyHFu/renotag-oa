@@ -16,6 +16,7 @@ function RoomsListItem(props) {
 					selectedAction={selectedAction}
 					setSelectedAction={setSelectedAction}
 					setData={setData}
+					currentRoom={currentRoom}
 				></ActionsList>
 			)}
 		</Card>

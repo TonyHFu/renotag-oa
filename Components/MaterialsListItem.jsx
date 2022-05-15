@@ -3,7 +3,7 @@ import React from "react";
 import Editable from "./Editable";
 
 function MaterialsListItem(props) {
-	const { material, setData } = props;
+	const { material, setData, currentRoom } = props;
 
 	const handleDelete = () => {};
 

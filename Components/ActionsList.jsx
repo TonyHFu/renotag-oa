@@ -3,7 +3,8 @@ import React from "react";
 import ActionsListItem from "./ActionsListItem";
 
 function ActionsList(props) {
-	const { actions, selectedAction, setSelectedAction, setData } = props;
+	const { actions, selectedAction, setSelectedAction, setData, currentRoom } =
+		props;
 	return (
 		<List>
 			{actions.map(action => {
@@ -14,6 +15,7 @@ function ActionsList(props) {
 						selectedAction={selectedAction}
 						setSelectedAction={setSelectedAction}
 						setData={setData}
+						currentRoom={currentRoom}
 					></ActionsListItem>
 				);
 			})}

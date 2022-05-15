@@ -3,7 +3,8 @@ import React from "react";
 import MaterialsList from "./MaterialsList";
 
 function ActionsListItem(props) {
-	const { action, selectedAction, setSelectedAction, setData } = props;
+	const { action, selectedAction, setSelectedAction, setData, currentRoom } =
+		props;
 	return (
 		<ListItem
 			style={{ display: "block" }}
@@ -15,6 +16,7 @@ function ActionsListItem(props) {
 				selectedAction={selectedAction}
 				setSelectedAction={setSelectedAction}
 				setData={setData}
+				currentRoom={currentRoom}
 			></MaterialsList>
 		</ListItem>
 	);
