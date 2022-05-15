@@ -1,11 +1,38 @@
 import { Button, ListItem, Typography } from "@mui/material";
+import { doc, updateDoc } from "firebase/firestore";
 import React from "react";
+import { db } from "../firebase";
 import Editable from "./Editable";
 
 function MaterialsListItem(props) {
-	const { material, setData, currentRoom } = props;
+	const { material, setData, currentRoom, selectedAction } = props;
 
-	const handleDelete = () => {};
+	const handleDelete = () => {
+		const editedDoc = doc(
+			db,
+			"actions_materials",
+			material.actions_materials_id
+		);
+		updateDoc(editedDoc, { updated: false }).then(res => {
+			setData(prev => {
+				const copyOfPrev = [...prev];
+				const roomIndex = copyOfPrev.findIndex(room => room.id === currentRoom);
+				const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
+					action => action.id === selectedAction
+				);
+				const materialIndex = copyOfPrev[roomIndex].actions[
+					actionIndex
+				].materials.findIndex(
+					eachMaterial => eachMaterial.material_id === material.material_id
+				);
+				copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
+					materialIndex,
+					1
+				);
+				return copyOfPrev;
+			});
+		});
+	};
 
 	return (
 		<ListItem
@@ -45,7 +72,9 @@ function MaterialsListItem(props) {
 				fieldName={"units"}
 				docId={material.actions_materials_id}
 			></Editable>
-			<Button variant="outlined">Delete</Button>
+			<Button onClick={handleDelete} variant="outlined">
+				Delete
+			</Button>
 		</ListItem>
 	);
 }
