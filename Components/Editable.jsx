@@ -1,8 +1,18 @@
 import { Button, Dialog, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
+import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Editable(props) {
-	const { prefix, suffix, content } = props;
+	const {
+		prefix,
+		suffix,
+		content,
+		otherFields,
+		collectionName,
+		fieldName,
+		docId,
+	} = props;
 	const [clicked, setClicked] = useState(false);
 	const [editedContent, setEditedContent] = useState(content);
 	const [open, setOpen] = useState(false);
@@ -20,7 +30,17 @@ function Editable(props) {
 		setOpen(false);
 	};
 
-	const handleUpdate = () => {};
+	const handleUpdate = () => {
+		addDoc(collection(db, collectionName), {
+			...otherFields,
+			[fieldName]: editedContent,
+			updated: true,
+			timestamp: serverTimestamp(),
+		}).then(res => {
+			console.log("doc added!");
+			setOpen(false);
+		});
+	};
 
 	return (
 		<>

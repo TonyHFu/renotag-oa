@@ -9,6 +9,7 @@ function ActionsList(props) {
 			{actions.map(action => {
 				return (
 					<ActionsListItem
+						key={action.id}
 						action={action}
 						selectedAction={selectedAction}
 						setSelectedAction={setSelectedAction}

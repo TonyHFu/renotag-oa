@@ -9,7 +9,10 @@ function MaterialsList(props) {
 		<List>
 			{action.id === selectedAction?.toString() &&
 				action.materials.map(material => (
-					<MaterialsListItem material={material}></MaterialsListItem>
+					<MaterialsListItem
+						material={material}
+						key={material.id}
+					></MaterialsListItem>
 				))}
 		</List>
 	);

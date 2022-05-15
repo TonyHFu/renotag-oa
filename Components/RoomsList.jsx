@@ -92,16 +92,16 @@ function RoomsList() {
 												actionsMaterials.action_id === action.id
 										)
 										.map(material => {
+											const { name, price } = materialsArr.filter(
+												materialFromArr =>
+													material.material_id === materialFromArr.id
+											)[0];
 											return {
+												actions_materials_id: material.id,
 												id: material.material_id,
-												name: materialsArr.filter(
-													materialFromArr =>
-														material.material_id === materialFromArr.id
-												)[0].name,
-												price: materialsArr.filter(
-													materialFromArr =>
-														material.material_id === materialFromArr.id
-												)[0].price,
+												action_id: material.action_id,
+												name,
+												price,
 												units: material.units,
 												timestamp: material.timestamp,
 												updated: material.updated,
