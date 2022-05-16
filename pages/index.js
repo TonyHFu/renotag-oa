@@ -211,7 +211,7 @@ export default function Home() {
 	};
 	return (
 		<div className={styles.container}>
-			<pre>{JSON.stringify(states.actionsMaterials, null, 2)}</pre>
+			{/* <pre>{JSON.stringify(states.actionsMaterials, null, 2)}</pre> */}
 			<StatesContext.Provider value={states}>
 				<DisplayStats sideNavData={sideNavData}></DisplayStats>
 				<RoomsList

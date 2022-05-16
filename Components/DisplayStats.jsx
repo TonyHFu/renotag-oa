@@ -8,7 +8,7 @@ const tables = ["rooms", "actions", "materials"];
 function DisplayStats(props) {
 	const { sideNavData } = props;
 
-	const [table, setTable] = useState("rooms");
+	const [table, setTable] = useState("materials");
 	const [instance, setInstance] = useState(sideNavData[table][0]?.name || null);
 
 	useEffect(() => {}, []);

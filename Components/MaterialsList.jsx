@@ -133,7 +133,7 @@ function MaterialsList(props) {
 				)}
 				{action.id === selectedAction?.toString() && (
 					<Button variant="outlined" onClick={handleClickAdd}>
-						Add
+						Add Material
 					</Button>
 				)}
 			</List>

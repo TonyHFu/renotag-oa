@@ -42,7 +42,7 @@ function DisplayArea(props) {
 						{
 							sideNavData.materialDetails.filter(
 								material => material.id === materialId
-							)[0].price
+							)[0]?.price
 						}
 					</p>
 					{/* <pre>{JSON.stringify(sideNavData, null, 2)}</pre> */}
