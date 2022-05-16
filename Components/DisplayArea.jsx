@@ -30,7 +30,7 @@ function DisplayArea(props) {
 		});
 
 	return (
-		<div>
+		<div style={{ paddingLeft: 50 }}>
 			<h3>{table}</h3>
 			<h4>{instance}</h4>
 
@@ -63,7 +63,7 @@ function DisplayArea(props) {
 						data={{
 							datasets: [
 								{
-									label: "",
+									label: "Unit Price",
 									fill: true,
 									borderColor: "#742774",
 									data: materialDetailsData,

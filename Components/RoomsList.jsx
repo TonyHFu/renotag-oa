@@ -12,8 +12,9 @@ import RoomsListItem from "./RoomsListItem";
 function RoomsList(props) {
 	const { data, handleRoomSelection, currentRoom, setData } = props;
 	return (
-		<div>
+		<div style={{ paddingBottom: 200 }}>
 			{/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+			<h2>Quotes</h2>
 			{data.map(room => {
 				return (
 					<RoomsListItem

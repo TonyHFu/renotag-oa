@@ -60,7 +60,7 @@ function MaterialsList(props) {
 						material_id: selectedMaterial,
 						units,
 						updated: true,
-						timestamp: new Date().getTime(),
+						timestamp: serverTimestamp(),
 					},
 				];
 			});
