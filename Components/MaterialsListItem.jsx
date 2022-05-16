@@ -1,11 +1,13 @@
 import { Button, ListItem, Typography } from "@mui/material";
 import { doc, updateDoc } from "firebase/firestore";
-import React from "react";
+import React, { useContext } from "react";
 import { db } from "../firebase";
 import Editable from "./Editable";
+import { StatesContext } from "../pages/index";
 
 function MaterialsListItem(props) {
 	const { material, setData, currentRoom, selectedAction } = props;
+	const states = useContext(StatesContext);
 
 	const handleDelete = () => {
 		const editedDoc = doc(
@@ -15,21 +17,29 @@ function MaterialsListItem(props) {
 		);
 		updateDoc(editedDoc, { updated: false }).then(res => {
 			console.log("doc updated => false");
-			setData(prev => {
+			// setData(prev => {
+			// 	const copyOfPrev = [...prev];
+			// 	const roomIndex = copyOfPrev.findIndex(room => room.id === currentRoom);
+			// 	const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
+			// 		action => action.id === selectedAction
+			// 	);
+			// 	const materialIndex = copyOfPrev[roomIndex].actions[
+			// 		actionIndex
+			// 	].materials.findIndex(
+			// 		eachMaterial => eachMaterial.material_id === material.material_id
+			// 	);
+			// 	copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
+			// 		materialIndex,
+			// 		1
+			// 	);
+			// 	return copyOfPrev;
+			// });
+			states.setActionsMaterials(prev => {
 				const copyOfPrev = [...prev];
-				const roomIndex = copyOfPrev.findIndex(room => room.id === currentRoom);
-				const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
-					action => action.id === selectedAction
+				const actionsMaterialsIndex = copyOfPrev.findIndex(
+					actionMaterial => actionMaterial.id === material.actions_materials_id
 				);
-				const materialIndex = copyOfPrev[roomIndex].actions[
-					actionIndex
-				].materials.findIndex(
-					eachMaterial => eachMaterial.material_id === material.material_id
-				);
-				copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
-					materialIndex,
-					1
-				);
+				copyOfPrev[actionsMaterialsIndex].updated = false;
 				return copyOfPrev;
 			});
 		});
