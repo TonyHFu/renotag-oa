@@ -47,7 +47,6 @@ function Editable(props) {
 	};
 
 	const handleUpdate = () => {
-		//Note: currently does not update data state, only the displayed state. refresh will draw in new data
 		const editedDoc = doc(db, collectionName, docId);
 		let newDocId;
 		Promise.all([

@@ -3,10 +3,8 @@ import {
 	FormControl,
 	InputLabel,
 	List,
-	ListItem,
 	MenuItem,
 	Select,
-	Typography,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import MaterialsListItem from "./MaterialsListItem";
@@ -42,7 +40,6 @@ function MaterialsList(props) {
 
 	const handleConfirmAdd = e => {
 		e.preventDefault();
-		// alert("units:" + units + "\nmaterial_id: " + selectedMaterial);
 		addDoc(collection(db, "actions_materials"), {
 			action_id: selectedAction,
 			material_id: selectedMaterial,
@@ -107,13 +104,7 @@ function MaterialsList(props) {
 									);
 								})}
 							</Select>
-							{/* <label htmlFor="price">Price:</label>
-							<input
-								type="number"
-								name="price"
-								onChange={handlePriceChange}
-								value={price}
-							></input>*/}
+
 							<label htmlFor="units">Units:</label>
 							<input
 								type="number"

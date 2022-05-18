@@ -17,23 +17,7 @@ function MaterialsListItem(props) {
 		);
 		updateDoc(editedDoc, { updated: false }).then(res => {
 			console.log("doc updated => false");
-			// setData(prev => {
-			// 	const copyOfPrev = [...prev];
-			// 	const roomIndex = copyOfPrev.findIndex(room => room.id === currentRoom);
-			// 	const actionIndex = copyOfPrev[roomIndex].actions.findIndex(
-			// 		action => action.id === selectedAction
-			// 	);
-			// 	const materialIndex = copyOfPrev[roomIndex].actions[
-			// 		actionIndex
-			// 	].materials.findIndex(
-			// 		eachMaterial => eachMaterial.material_id === material.material_id
-			// 	);
-			// 	copyOfPrev[roomIndex].actions[actionIndex].materials.splice(
-			// 		materialIndex,
-			// 		1
-			// 	);
-			// 	return copyOfPrev;
-			// });
+
 			states.setActionsMaterials(prev => {
 				const copyOfPrev = [...prev];
 				const actionsMaterialsIndex = copyOfPrev.findIndex(

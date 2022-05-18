@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Line } from "react-chartjs-2";
-import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
 
 function DisplayArea(props) {
@@ -25,7 +24,6 @@ function DisplayArea(props) {
 			y: Number(material.price),
 		}))
 		.sort((a, b) => {
-			// console.log(a.x - b.x);
 			return a.x - b.x;
 		});
 

@@ -1,12 +1,4 @@
-import {
-	collection,
-	getDocs,
-	onSnapshot,
-	query,
-	where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
+import React from "react";
 import RoomsListItem from "./RoomsListItem";
 
 function RoomsList(props) {
